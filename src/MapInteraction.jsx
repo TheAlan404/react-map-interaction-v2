@@ -554,7 +554,7 @@ class MapInteractionController extends Component {
         const value = controlled ? this.props.value : this.state.value;
         return (
             <MapInteractionControlled
-                onChange={(value) => this.onChange(value)}
+                onChange={value => this.onChange(value)}
                 value={value}
                 {...this.innerProps()}
             >
