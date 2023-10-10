@@ -93,49 +93,68 @@ MapInteraction doesn't require any props. It will control its own internal state
     scale: PropTypes.number,
     // The distance in pixels to translate the contents by.
     translation: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),    
-  }),
+  })
 
   defaultValue: PropTypes.shape({
     scale: PropTypes.number,
     translation: PropTypes.shape({ x: PropTypes.number, y: PropTypes.number }),
-  }),
+  })
 
   // Stops user from being able to zoom, but will still adhere to props.scale
-  disableZoom: PropTypes.bool,
+  disableZoom: PropTypes.bool
 
   // Stops user from being able to pan. Note that translation can still be
   // changed via zooming, in order to keep the focal point beneath the cursor. This prop does not change the behavior of the `translation` prop.
-  disablePan: PropTypes.bool,
+  disablePan: PropTypes.bool
 
   // Apply a limit to the translation in any direction in pixel values. The default is unbounded.
   translationBounds: PropTypes.shape({
     xMin: PropTypes.number, xMax: PropTypes.number, yMin: PropTypes.number, yMax: PropTypes.number
-  }),
+  })
 
   // Called with an object { scale, translation }
-  onChange: PropTypes.func,
-
+  onChange: PropTypes.func
+    
+  // Called with an object { pointer, scale, translation }
+  onDragStart: PropTypes.func
+    
+  // Called with an object { pointer, scale, translation }
+  onDragEnd: PropTypes.func
+    
+  // Called with new scale float
+  onWheel: PropTypes.func
+  
   // The min and max of the scale of the zoom. Must be > 0.
-  minScale: PropTypes.number,
-  maxScale: PropTypes.number,
+  minScale: PropTypes.number
+  maxScale: PropTypes.number
 
   // When 'showControls' is 'true', plus/minus buttons are rendered
   // that let the user control the zoom factor
-  showControls: PropTypes.bool,
-
+  showControls: PropTypes.bool
+  
+  // content to render as controls, it will receive extra props:
+  // onClickPlus
+  // onClickMinus
+  // scale
+  // minScale
+  // maxScale
+  // disableZoom
+  //  
+  controls: PropTypes.node
+    
   // Content to render in each of the control buttons (only when 'showControls' is 'true')
-  plusBtnContents: PropTypes.node,
-  minusBtnContents: PropTypes.node,
+  plusBtnContents: PropTypes.node
+  minusBtnContents: PropTypes.node
 
   // Class applied to the controls wrapper (only when 'showControls' is 'true')
-  controlsClass: PropTypes.string,
+  controlsClass: PropTypes.string
 
   // Class applied to the plus/minus buttons (only when 'showControls' is 'true')
-  btnClass: PropTypes.string,
+  btnClass: PropTypes.string
 
   // Classes applied to each button separately (only when 'showControls' is 'true')
-  plusBtnClass: PropTypes.string,
-  minusBtnClass: PropTypes.string,
+  plusBtnClass: PropTypes.string
+  minusBtnClass: PropTypes.string
 };
 ```
 

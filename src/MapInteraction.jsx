@@ -31,7 +31,9 @@ export class MapInteractionControlled extends Component {
                 translation: translationShape.isRequired,
             }).isRequired,
             onChange: PropTypes.func.isRequired,
-
+            onDragStart: PropTypes.func,
+            onDragEnd: PropTypes.func,
+            onWheel: PropTypes.func,
             disableZoom: PropTypes.bool,
             disablePan: PropTypes.bool,
             translationBounds: PropTypes.shape({
@@ -40,6 +42,7 @@ export class MapInteractionControlled extends Component {
             minScale: PropTypes.number,
             maxScale: PropTypes.number,
             showControls: PropTypes.bool,
+            controls: PropTypes.node,
             plusBtnContents: PropTypes.node,
             minusBtnContents: PropTypes.node,
             btnClass: PropTypes.string,
@@ -216,11 +219,19 @@ export class MapInteractionControlled extends Component {
         const mousePos = this.clientPosToTranslatedPos({x: e.clientX, y: e.clientY});
 
         this.scaleFromPoint(newScale, mousePos);
+
+        if (typeof this.props.onWheel === 'function') {
+            this.props.onWheel(newScale);
+        }
     }
 
     setPointerState(pointers) {
         if (!pointers || pointers.length === 0) {
             this.startPointerInfo = undefined;
+
+            if (typeof this.props.onDragEnd === 'function') {
+                this.props.onDragEnd(this.startPointerInfo);
+            }
             return;
         }
 
@@ -228,6 +239,10 @@ export class MapInteractionControlled extends Component {
             pointers,
             scale: this.props.value.scale,
             translation: this.props.value.translation,
+        }
+
+        if (typeof this.props.onDragStart === 'function') {
+            this.props.onDragStart(this.startPointerInfo);
         }
     }
 
@@ -364,28 +379,35 @@ export class MapInteractionControlled extends Component {
         return this.getContainerNode().getBoundingClientRect();
     }
 
-    renderControls() {
+    renderControls(controls) {
         const step = this.discreteScaleStepSize();
-        return (
-            <Controls
-                onClickPlus={() => this.changeScale(step)}
-                onClickMinus={() => this.changeScale(-step)}
-                plusBtnContents={this.props.plusBtnContents}
-                minusBtnContents={this.props.minusBtnContents}
-                btnClass={this.props.btnClass}
-                plusBtnClass={this.props.plusBtnClass}
-                minusBtnClass={this.props.minusBtnClass}
-                controlsClass={this.props.controlsClass}
-                scale={this.props.value.scale}
-                minScale={this.props.minScale}
-                maxScale={this.props.maxScale}
-                disableZoom={this.props.disableZoom}
+        const props = {
+            onClickPlus: () => this.changeScale(step),
+            onClickMinus: () => this.changeScale(-step),
+            scale: this.props.value.scale,
+            minScale: this.props.minScale,
+            maxScale: this.props.maxScale
+        }
+        if (controls) {
+            const ClonedElementWithProps = React.cloneElement(
+                controls,
+                props
+            );
+            return ClonedElementWithProps
+        } else
+            return <Controls {...props}
+                             plusBtnContents={this.props.plusBtnContents}
+                             minusBtnContents={this.props.minusBtnContents}
+                             btnClass={this.props.btnClass}
+                             plusBtnClass={this.props.plusBtnClass}
+                             minusBtnClass={this.props.minusBtnClass}
+                             controlsClass={this.props.controlsClass}
+                             disableZoom={this.props.disableZoom}
             />
-        );
     }
 
     render() {
-        const {showControls, children} = this.props;
+        const {showControls, controls, children} = this.props;
         const scale = this.props.value.scale;
         // Defensively clamp the translation. This should not be necessary if we properly set state elsewhere.
         const translation = this.clampTranslation(this.props.value.translation);
@@ -421,7 +443,7 @@ export class MapInteractionControlled extends Component {
                 onTouchEndCapture={handleEventCapture}
             >
                 {(children || undefined) && children({translation, scale})}
-                {(showControls || undefined) && this.renderControls()}
+                {(showControls || undefined) && this.renderControls(controls)}
             </div>
         );
     }
@@ -447,12 +469,16 @@ class MapInteractionController extends Component {
             disableZoom: PropTypes.bool,
             disablePan: PropTypes.bool,
             onChange: PropTypes.func,
+            onDragStart: PropTypes.func,
+            onDragEnd: PropTypes.func,
+            onWheel: PropTypes.func,
             translationBounds: PropTypes.shape({
                 xMin: PropTypes.number, xMax: PropTypes.number, yMin: PropTypes.number, yMax: PropTypes.number
             }),
             minScale: PropTypes.number,
             maxScale: PropTypes.number,
             showControls: PropTypes.bool,
+            controls: PropTypes.node,
             plusBtnContents: PropTypes.node,
             minusBtnContents: PropTypes.node,
             btnClass: PropTypes.string,
