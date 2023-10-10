@@ -6,7 +6,7 @@ Add map like zooming and panning to any React element. This works on both touch 
 
 ## Install
 ```bash
-npm install --save react-map-interaction
+npm install --save Ninjinka/react-map-interaction
 ```
 
 ## Usage
