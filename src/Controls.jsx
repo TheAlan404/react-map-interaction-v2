@@ -15,6 +15,7 @@ class Controls extends Component {
             maxScale,
             onClickPlus,
             onClickMinus,
+            setZoom,
             disableZoom
         } = this.props;
 
@@ -81,6 +82,7 @@ class Controls extends Component {
 Controls.propTypes = {
     onClickPlus: PropTypes.func.isRequired,
     onClickMinus: PropTypes.func.isRequired,
+    setZoom: PropTypes.func.isRequired,
     plusBtnContents: PropTypes.node,
     minusBtnContents: PropTypes.node,
     btnClass: PropTypes.string,

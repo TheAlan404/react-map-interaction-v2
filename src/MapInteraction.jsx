@@ -369,6 +369,18 @@ export class MapInteractionControlled extends Component {
         const focalPoint = this.clientPosToTranslatedPos({x, y});
         this.scaleFromPoint(scale, focalPoint);
     }
+    // Zoom using the center of the content as a focal point
+    setZoom(targetScale) {
+        const {minScale, maxScale} = this.props;
+        const scale = clamp(minScale, targetScale, maxScale);
+
+        const rect = this.getContainerBoundingClientRect();
+        const x = rect.left + (rect.width / 2);
+        const y = rect.top + (rect.height / 2);
+
+        const focalPoint = this.clientPosToTranslatedPos({x, y});
+        this.scaleFromPoint(scale, focalPoint);
+    }
 
     // Done like this so it is mockable
     getContainerNode() {
@@ -384,6 +396,7 @@ export class MapInteractionControlled extends Component {
         const props = {
             onClickPlus: () => this.changeScale(step),
             onClickMinus: () => this.changeScale(-step),
+            setZoom: () => this.changeScale(),
             scale: this.props.value.scale,
             minScale: this.props.minScale,
             maxScale: this.props.maxScale
