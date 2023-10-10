@@ -428,24 +428,24 @@ export class MapInteractionControlled extends Component {
             }
         }
 
-        return (
-            <div
-                ref={(node) => {
-                    this.containerNode = node;
-                }}
-                style={{
-                    height: '100%',
-                    width: '100%',
-                    position: 'relative', // for absolutely positioned children
-                    touchAction: 'none'
-                }}
-                onClickCapture={handleEventCapture}
-                onTouchEndCapture={handleEventCapture}
-            >
-                {(children || undefined) && children({translation, scale})}
+        return <>
+                <div
+                    ref={(node) => {
+                        this.containerNode = node;
+                    }}
+                    style={{
+                        height: '100%',
+                        width: '100%',
+                        position: 'relative', // for absolutely positioned children
+                        touchAction: 'none'
+                    }}
+                    onClickCapture={handleEventCapture}
+                    onTouchEndCapture={handleEventCapture}
+                >
+                    {(children || undefined) && children({translation, scale})}
+                </div>
                 {(showControls || undefined) && this.renderControls(controls)}
-            </div>
-        );
+            </>
     }
 }
 
