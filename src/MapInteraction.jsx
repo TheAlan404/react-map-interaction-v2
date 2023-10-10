@@ -396,7 +396,7 @@ export class MapInteractionControlled extends Component {
         const props = {
             onClickPlus: () => this.changeScale(step),
             onClickMinus: () => this.changeScale(-step),
-            setZoom: () => this.changeScale(),
+            setZoom: (targetscale) => this.setZoom(targetscale),
             scale: this.props.value.scale,
             minScale: this.props.minScale,
             maxScale: this.props.maxScale
