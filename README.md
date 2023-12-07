@@ -1,3 +1,14 @@
+# FORKED
+
+I forked this project since there arent other good react pan-view libraries and this one is the least worst. Also its a fork of a fork, thanks to whoever updated it before me.
+
+## Changes
+
+- Removed the controls. Do it yourself with the UI library youre using
+- Made it so only the element its bound on can be panned, this fixes interactive elements not being interactible
+
+Old readme:
+
 # react-map-interaction
 
 Add map like zooming and panning to any React element. This works on both touch devices (pinch to zoom, drag to pan) as well as with a mouse or trackpad (wheel scroll to zoom, mouse drag to pan).
